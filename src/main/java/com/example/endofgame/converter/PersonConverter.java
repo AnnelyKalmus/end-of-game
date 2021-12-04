@@ -1,6 +1,5 @@
 package com.example.endofgame.converter;
 
-
 import com.example.endofgame.dto.PersonSummary;
 import com.example.endofgame.entity.Person;
 import org.springframework.stereotype.Component;
