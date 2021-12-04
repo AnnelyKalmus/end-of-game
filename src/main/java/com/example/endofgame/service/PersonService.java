@@ -16,18 +16,14 @@ public class PersonService {
 
     private final PersonConverter personConverter;
 
-    public PersonService(final PersonRepository repository, final PersonConverter personConverter) {
-        this.repository = repository;
-        this.personConverter = personConverter;
-    }
 
-    public PersonSummary getMyPerson(){
+    public PersonSummary getMyPerson() {
         log.info("getMyPerson()");
-      return personConverter.fromEntityToDto(repository.findMe());
+        return personConverter.fromEntityToDto(repository.findMe());
     }
 
 
-private final ExecutorService workers;
+    private final ExecutorService workers;
 
     public PersonService(final PersonRepository repository, final PersonConverter personConverter, final ExecutorService workers) {
         this.repository = repository;
@@ -35,10 +31,6 @@ private final ExecutorService workers;
         this.workers = workers;
     }
 
-    public PersonSummary getMyPerson() {
-        log.info("getMyPerson()");
-        return personConverter.fromEntityToDto(repository.findMe());
-    }
 
     public void runNewThread() {
         // Executor ThreadExecutor
@@ -47,26 +39,26 @@ private final ExecutorService workers;
         // Runnable is just job for worker
         //Thread pool is set of workers ready to take any job (Runnable)
 
-Runnable anotherJob = new Runnable() {
-    @Override
-    public void run() {
-   log.info("inside anonymous class");
-   log.info("I'm running by: [" + Thread.currentThread().getName() + "]");
-    }
-};
+        Runnable anotherJob = new Runnable() {
+            @Override
+            public void run() {
+                log.info("inside anonymous class");
+                log.info("I'm running by: [" + Thread.currentThread().getName() + "]");
+            }
+        };
 
-Runnable newJob = () -> {
-    log.info("inside lambda");
-    log.info("I'm running by: [" + Thread.currentThread().getName() + "]");
-    try {
-        Thread.sleep(2000);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-};
+        Runnable newJob = () -> {
+            log.info("inside lambda");
+            log.info("I'm running by: [" + Thread.currentThread().getName() + "]");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
 
-workers.submit(newJob);
-workers.submit(anotherJob);
+        workers.submit(newJob);
+        workers.submit(anotherJob);
 
 
     }
