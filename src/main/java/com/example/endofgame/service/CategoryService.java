@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +24,7 @@ public class CategoryService {
         this.converter = converter;
     }
 
-    public List<CategorySummary> readAllCategories(){
+    public List<CategorySummary> readAllCategories() {
         log.info("reading all categories");
 
         //logging levels:
@@ -32,23 +33,25 @@ public class CategoryService {
         //info - default level
         //warn
         //error
-       var result =  repository.findAll()
-               .stream()
-    //           .map(category -> converter.fromEntityToDto(category))
-               .map(converter::fromEntityToDto)
-               .toList();
-       log.info("number of read categories:[{}]", result.size());
-       log.debug("result: [{}]", result);
-    // =   log.info(String.format("number of read categories:[%s]", result.size()));
+        var result = repository.findAll()
+                .stream()
+                //           .map(category -> converter.fromEntityToDto(category))
+                .map(converter::fromEntityToDto)
+                .toList();
+        log.info("number of read categories:[{}]", result.size());
+        log.debug("result: [{}]", result);
+        // =   log.info(String.format("number of read categories:[%s]", result.size()));
 
 
         return result;
     }
 
-    public CategorySummary readCategoryById(Long myId) {
-    //TODO: add good logs here
- var result =      repository.findById(myId);
-        return result.map(category -> converter.fromEntityToDto(category))
-                .orElse(null);
+    //Optional<CategorySummary>
+
+    public Optional<CategorySummary> readCategoryById(Long myId) {
+        var result = repository.findById(myId);
+        log.info("item with id:[{}] exists? - [{}]", myId, result.isPresent());
+        log.debug("received category: [{}]", result.orElse(null));
+        return result.map(category -> converter.fromEntityToDto(category));
     }
 }
