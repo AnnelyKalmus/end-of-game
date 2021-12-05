@@ -23,8 +23,8 @@ public class PersonController {
     }
 
     @GetMapping("/new-thread")
-    public void runNewThread(){
-      log.info("new-thread");
-      service.runNewThread();
+    public void runNewThread() {
+        log.info("new-thread");
+        service.runNewThread();
     }
 }

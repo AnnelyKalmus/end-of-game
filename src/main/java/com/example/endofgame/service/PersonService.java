@@ -16,40 +16,31 @@ public class PersonService {
 
     private final PersonConverter personConverter;
 
+    private final ExecutorService workers;
+
+    public PersonService(final PersonRepository repository, final PersonConverter personConverter,
+                         final ExecutorService workers) {
+        this.repository = repository;
+        this.personConverter = personConverter;
+        this.workers = workers;
+    }
 
     public PersonSummary getMyPerson() {
         log.info("getMyPerson()");
         return personConverter.fromEntityToDto(repository.findMe());
     }
 
-
-    private final ExecutorService workers;
-
-    public PersonService(final PersonRepository repository, final PersonConverter personConverter, final ExecutorService workers) {
-        this.repository = repository;
-        this.personConverter = personConverter;
-        this.workers = workers;
-    }
-
-
     public void runNewThread() {
-        // Executor ThreadExecutor
-        // Thread vs Runnable
-        // Thread is some kind of worker
-        // Runnable is just job for worker
-        //Thread pool is set of workers ready to take any job (Runnable)
-
         Runnable anotherJob = new Runnable() {
             @Override
             public void run() {
                 log.info("inside anonymous class");
-                log.info("I'm running by: [" + Thread.currentThread().getName() + "]");
+                log.info("I'm running by:[" + Thread.currentThread().getName() + "]");
             }
         };
-
         Runnable newJob = () -> {
             log.info("inside lambda");
-            log.info("I'm running by: [" + Thread.currentThread().getName() + "]");
+            log.info("I'm running by:[" + Thread.currentThread().getName() + "]");
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -59,7 +50,5 @@ public class PersonService {
 
         workers.submit(newJob);
         workers.submit(anotherJob);
-
-
     }
 }
