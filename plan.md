@@ -35,7 +35,6 @@ Subject:
 1. Heroku cloud deploy
 2. Security
 
-
 ###How to implement feature
 1. Create entity
 2. Create repository
@@ -48,4 +47,4 @@ Subject:
       3. update
       4. delete
       5. create
-6. Create controller methods
+6. Create controllers methods
